@@ -813,3 +813,43 @@ No.
 Programming languages exist primarily for humans.
 
 ---
+
+# Interview Questions
+
+### Question 1
+
+Why can't a CPU execute JavaScript directly?
+
+---
+
+### Question 2
+
+Why does every programming language eventually become machine instructions?
+
+---
+
+### Question 3
+
+Why is binary used instead of decimal?
+
+---
+
+### Question 4
+
+Why are higher-level programming languages easier to maintain?
+
+---
+
+# Summary
+
+In this section you learned:
+
+- Why CPUs only understand machine language
+- Why binary exists
+- Why programming languages exist
+- Why every program must eventually be translated
+- Why humans don't write binary directly
+
+These ideas form the basis for understanding compilers, interpreters, Node.js, and JavaScript engines.
+
+The next section explains **Assembly Language, Compilers, and Interpreters**, where we'll follow the complete journey from TypeScript source code to executable machine instructions.
