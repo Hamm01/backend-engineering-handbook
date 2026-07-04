@@ -1548,3 +1548,487 @@ node app.js
 ```
 
 From there, we'll follow the program all the way from the operating system into the first line of your JavaScript code.
+
+# How the Operating System Starts a Program
+
+## Introduction
+
+In the previous chapter, we learned how high-level source code eventually becomes machine instructions that a CPU can execute.
+
+However, one important question still remains.
+
+Suppose you open a terminal and type:
+
+```bash
+node app.js
+```
+
+Almost instantly, your JavaScript program begins running.
+
+You see logs printed to the terminal.
+
+Files can be opened.
+
+HTTP servers start listening.
+
+Database connections are established.
+
+But how did all of that begin?
+
+Who loaded the `node` executable into memory?
+
+Who created memory for your application?
+
+Who decided where the program should run?
+
+Who gave it access to the CPU?
+
+Who cleaned everything up when the program exited?
+
+The answer is the **Operating System**.
+
+In this chapter, we'll follow the complete journey that begins the moment you press the **Enter** key after typing:
+
+```bash
+node app.js
+```
+
+By the end of this chapter, you'll understand how a backend application goes from being a file stored on disk to becoming a running process executing JavaScript code inside your computer.
+
+---
+
+# What Really Happens?
+
+Imagine your computer is currently idle.
+
+Nothing related to your application exists.
+
+There is:
+
+- no JavaScript running
+- no Node.js process
+- no allocated memory
+- no CPU instructions being executed
+- no network ports open
+
+Only two files exist on your storage device.
+
+```text
+Disk
+
+├── node.exe
+└── app.js
+```
+
+These are simply files.
+
+They are not running.
+
+They are not using CPU time.
+
+They are not occupying RAM.
+
+They're just bytes stored on your SSD.
+
+---
+
+# Step 1 — You Press Enter
+
+When you press **Enter**, something happens before Node.js is even involved.
+
+The terminal (PowerShell, CMD, Bash, or another shell) receives your command.
+
+```text
+Keyboard
+     │
+     ▼
+Terminal
+     │
+     ▼
+node app.js
+```
+
+The terminal now needs someone to execute this command.
+
+It cannot execute programs itself.
+
+Instead, it asks the operating system.
+
+```text
+Terminal
+     │
+Request:
+"Please start this executable."
+     │
+     ▼
+Operating System
+```
+
+---
+
+# Step 2 — The Operating System Searches for Node.js
+
+At this point, the operating system receives a request to execute the command:
+
+```bash
+node app.js
+```
+
+However, the operating system cannot execute the word `node`.
+
+It must first determine **where the executable file actually exists**.
+
+To do this, the operating system searches through a list of directories stored in the **PATH environment variable**.
+
+For example:
+
+```text
+PATH
+
+C:\Program Files\nodejs\
+C:\Windows\System32\
+C:\Windows\
+...
+```
+
+On Linux and macOS, the PATH might look like:
+
+```text
+/usr/local/bin
+/usr/bin
+/bin
+...
+```
+
+The operating system checks each directory until it finds the executable.
+
+```text
+Terminal
+      │
+      ▼
+node
+      │
+      ▼
+Operating System
+      │
+      ▼
+Search PATH
+      │
+      ▼
+Found node executable
+```
+
+If the executable cannot be found, you'll see an error similar to:
+
+```text
+'node' is not recognized as an internal or external command
+```
+
+or
+
+```text
+command not found: node
+```
+
+Once the executable is found, the operating system prepares to start it.
+
+---
+
+# Step 3 — Program vs Process
+
+This is one of the most important distinctions in computer science.
+
+Many developers use the words **program** and **process** interchangeably.
+
+They are **not** the same thing.
+
+A **program** is a passive file stored on disk.
+
+Examples include:
+
+- `node.exe`
+- `app.js`
+- `chrome.exe`
+
+A **process** is a program that is currently running.
+
+Think of it this way:
+
+```text
+Program
+      │
+(Double-click or Execute)
+      ▼
+Process
+```
+
+Another analogy is a recipe and a meal.
+
+```text
+Recipe
+    │
+Cook It
+    ▼
+Prepared Meal
+```
+
+The recipe is just instructions.
+
+The meal is the result of executing those instructions.
+
+Similarly:
+
+```text
+Program = Instructions stored on disk
+
+Process = Instructions currently executing
+```
+
+When you type:
+
+```bash
+node app.js
+```
+
+The operating system creates a **new process** for the Node.js executable.
+
+---
+
+# Step 4 — The Executable Loader
+
+Finding the executable is not enough.
+
+The operating system must now load it into memory.
+
+This job is performed by a component known as the **Executable Loader**.
+
+Its responsibilities include:
+
+- Reading the executable file from disk
+- Creating a new process
+- Allocating virtual memory
+- Loading executable code into memory
+- Preparing the stack
+- Preparing the heap
+- Initializing registers
+- Setting up command-line arguments
+- Preparing environment variables
+
+The process looks like this:
+
+```text
+Disk
+
+↓
+
+Executable File
+
+↓
+
+Executable Loader
+
+↓
+
+Memory
+
+↓
+
+Running Process
+```
+
+Only after these steps can the CPU begin executing instructions.
+
+---
+
+# Step 5 — The Scheduler Gives CPU Time
+
+Once the process has been created, it is ready to run.
+
+However, your computer is probably running hundreds of other processes.
+
+Examples include:
+
+- Browser
+- Music Player
+- Antivirus
+- VS Code
+- File Explorer
+
+The CPU can only execute a small number of instructions at any given moment.
+
+The operating system's **scheduler** decides which process gets CPU time.
+
+```text
+Ready Processes
+
+Browser
+
+Node.js
+
+VS Code
+
+Spotify
+
+↓
+
+CPU Scheduler
+
+↓
+
+CPU
+```
+
+Your Node.js process waits until the scheduler assigns it CPU time.
+
+When that happens, execution begins.
+
+---
+
+# Step 6 — Node.js Starts
+
+Now the CPU begins executing the machine instructions inside the Node.js executable.
+
+At this point:
+
+- Node.js runtime initializes
+- Internal libraries are loaded
+- V8 JavaScript Engine is initialized
+- Command-line arguments are processed
+
+Node.js then opens the JavaScript file you specified:
+
+```bash
+node app.js
+```
+
+It reads:
+
+```text
+app.js
+```
+
+from disk.
+
+---
+
+# Step 7 — V8 Executes JavaScript
+
+The JavaScript source code is handed to the V8 engine.
+
+V8 performs several stages internally:
+
+- Parse JavaScript
+- Generate an Abstract Syntax Tree (AST)
+- Produce bytecode
+- Interpret the bytecode
+- JIT compile frequently executed code into optimized machine code
+
+Eventually, machine instructions are generated.
+
+The CPU executes those instructions.
+
+Your JavaScript program is now running.
+
+---
+
+# The Complete Journey
+
+Putting everything together:
+
+```text
+node app.js
+
+↓
+
+Keyboard
+
+↓
+
+Terminal
+
+↓
+
+Operating System
+
+↓
+
+Search PATH
+
+↓
+
+Find node executable
+
+↓
+
+Executable Loader
+
+↓
+
+Create Process
+
+↓
+
+Allocate Virtual Memory
+
+↓
+
+Initialize Stack
+
+↓
+
+Initialize Heap
+
+↓
+
+Load Executable
+
+↓
+
+CPU Scheduler
+
+↓
+
+CPU Starts Executing Node.js
+
+↓
+
+Initialize Node.js Runtime
+
+↓
+
+Initialize V8
+
+↓
+
+Read app.js
+
+↓
+
+Parse JavaScript
+
+↓
+
+Generate Bytecode
+
+↓
+
+JIT Compile Hot Code
+
+↓
+
+Machine Instructions
+
+↓
+
+CPU Executes
+
+↓
+
+console.log("Hello World")
+```
+
+This is the complete journey from pressing the **Enter** key to executing the first line of your JavaScript program.
+
+Although this entire process usually takes only a fraction of a second, dozens of operating system components work together behind the scenes to make it possible.
+
+In the following chapters, we'll examine each stage in much greater detail, starting with the difference between **programs and processes**, followed by **virtual memory**, **process memory layout**, **threads**, **system calls**, and eventually the internals of **Node.js** and the **V8 JavaScript engine**.
