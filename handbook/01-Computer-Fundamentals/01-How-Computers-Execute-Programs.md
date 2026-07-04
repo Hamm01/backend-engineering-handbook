@@ -335,3 +335,481 @@ Before moving to the next section, make sure these ideas are clear:
 ✅ The operating system is responsible for loading programs before the CPU can execute them.
 
 ---
+
+# What's Next
+
+Now that we understand **why programming languages must be translated**, the next section explores:
+
+- Binary
+- Machine Language
+- Assembly Language
+- Compilers
+- Interpreters
+
+These concepts explain **how human-readable code becomes something a CPU can execute.**
+
+---
+
+# From Human Language to Machine Language
+
+Imagine you are visiting a country where nobody speaks your language.
+
+You speak English.
+
+The local people understand only Japanese.
+
+No matter how intelligent you are, communication cannot happen until both sides understand the same language.
+
+Programming languages work in exactly the same way.
+
+---
+
+## Mental Model
+
+Imagine this conversation.
+
+```
+
+Human
+
+↓
+
+English
+
+↓
+
+Translator
+
+↓
+
+Japanese
+
+↓
+
+Local Person
+
+```
+
+Programming follows the same idea.
+
+```
+
+Programmer
+
+↓
+
+TypeScript
+
+↓
+
+Compiler / Runtime
+
+↓
+
+Machine Code
+
+↓
+
+CPU
+
+```
+
+The CPU is not "smart."
+
+It simply understands a very small language called **Machine Language**.
+
+Everything else must eventually be translated.
+
+---
+
+# Why Do Programming Languages Exist?
+
+This is one of the most misunderstood questions among beginners.
+
+Many people think JavaScript exists because computers need JavaScript.
+
+That is completely backwards.
+
+JavaScript exists because **humans need JavaScript.**
+
+Computers would actually prefer if we wrote everything directly in machine instructions.
+
+Humans would never be productive doing that.
+
+Programming languages are designed for **human readability**, not for computers.
+
+---
+
+# Machine Language
+
+Machine Language is the only language the CPU executes directly.
+
+A machine instruction is simply a binary instruction telling the processor to perform one operation.
+
+Examples include:
+
+- Load data into a register
+- Add two numbers
+- Move memory
+- Compare values
+- Jump to another instruction
+
+A real machine instruction looks something like this:
+
+```text
+10110000 01100001
+```
+
+Thankfully, developers almost never write machine code manually.
+
+---
+
+# Why Binary?
+
+Computers are built using billions of tiny electronic switches called **transistors**.
+
+Each transistor has only two stable electrical states.
+
+```
+ON
+
+OFF
+```
+
+These states naturally become
+
+```
+1
+
+0
+```
+
+Everything inside your computer is represented using these two values.
+
+For example,
+
+```
+Number
+
+↓
+
+Binary
+
+↓
+
+Electrical Signals
+
+↓
+
+CPU
+```
+
+When you type the number
+
+```text
+25
+```
+
+the processor eventually stores it as
+
+```text
+11001
+```
+
+When you type
+
+```text
+A
+```
+
+the computer eventually stores it as
+
+```text
+01000001
+```
+
+Everything becomes binary.
+
+---
+
+# What About Images?
+
+People often think binary only represents numbers.
+
+Actually, binary represents **everything.**
+
+```
+Images
+
+↓
+
+Pixels
+
+↓
+
+Numbers
+
+↓
+
+Binary
+```
+
+---
+
+Music
+
+```
+Sound
+
+↓
+
+Samples
+
+↓
+
+Numbers
+
+↓
+
+Binary
+```
+
+---
+
+Videos
+
+```
+Frames
+
+↓
+
+Pixels
+
+↓
+
+Numbers
+
+↓
+
+Binary
+```
+
+---
+
+Even this Markdown file eventually becomes binary before being stored on your SSD.
+
+---
+
+# Machine Instructions
+
+A CPU performs only extremely small operations.
+
+For example,
+
+```
+Load value
+
+↓
+
+Add value
+
+↓
+
+Store result
+
+↓
+
+Jump
+
+↓
+
+Compare
+
+↓
+
+Repeat
+```
+
+Suppose we write
+
+```ts
+const answer = 10 + 20
+```
+
+You probably imagine one operation.
+
+The processor does not.
+
+Internally it performs several tiny instructions.
+
+A simplified view:
+
+```
+Load 10
+
+↓
+
+Load 20
+
+↓
+
+Add
+
+↓
+
+Store Result
+
+↓
+
+Continue
+```
+
+Millions or billions of these tiny operations occur every second.
+
+Modern CPUs execute billions of instructions every second.
+
+---
+
+# Why Can't We Just Program in Binary?
+
+Technically...
+
+we can.
+
+Historically, programmers actually did.
+
+Imagine writing an application like this:
+
+```text
+101101010101010001011001010101001001010101...
+```
+
+Finding one mistake would be nearly impossible.
+
+Adding a new feature would be a nightmare.
+
+Maintaining millions of binary digits is simply unrealistic.
+
+Higher-level programming languages were created to solve this exact problem.
+
+---
+
+# Levels of Programming Languages
+
+As computers evolved, programming languages also evolved.
+
+```
+Machine Language
+
+↓
+
+Assembly
+
+↓
+
+C
+
+↓
+
+C++
+
+↓
+
+Java
+
+↓
+
+JavaScript
+
+↓
+
+TypeScript
+```
+
+Notice something interesting.
+
+As we move upward,
+
+programming becomes easier for humans,
+
+but another translation step becomes necessary before the CPU can execute the program.
+
+---
+
+# Quick Comparison
+
+| Language   | Human Friendly | CPU Friendly |
+| ---------- | -------------- | ------------ |
+| Binary     | ❌             | ✅           |
+| Assembly   | ⚠️             | ✅           |
+| C          | ✅             | ❌           |
+| JavaScript | ✅✅           | ❌           |
+| TypeScript | ✅✅           | ❌           |
+
+The easier a language becomes for humans,
+
+the more work is required behind the scenes before the CPU can execute it.
+
+---
+
+# Production Perspective
+
+When you run:
+
+```bash
+node app.js
+```
+
+Node.js does **not** send your JavaScript directly to the CPU.
+
+Instead,
+
+```
+JavaScript
+
+↓
+
+V8 JavaScript Engine
+
+↓
+
+Machine Instructions
+
+↓
+
+CPU
+```
+
+We'll study V8 in detail later in the Node.js Internals module.
+
+For now, remember one key idea:
+
+> The CPU never executes JavaScript directly.
+
+---
+
+# Common Misconceptions
+
+❌ "The CPU understands JavaScript."
+
+No.
+
+The CPU executes machine instructions.
+
+---
+
+❌ "Binary is only used for numbers."
+
+No.
+
+Binary represents every kind of digital information.
+
+---
+
+❌ "Programming languages exist for computers."
+
+No.
+
+Programming languages exist primarily for humans.
+
+---
